@@ -1,0 +1,60 @@
+import React from 'react';
+import { useRouter } from 'next/router';
+import { authService } from '../src/services/authService';
+
+export default function HomeScreen() {
+    const router = useRouter();
+    const [values, setValues] = React.useState({
+        email: '',
+        senha: '',
+    });
+
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+        const fieldValue = event.target.value;
+        const fieldName = event.target.name;
+        setValues((currentValues) => {
+            return {
+                ...currentValues,
+                [fieldName]: fieldValue,
+            };
+        })
+    }
+
+    return (
+        <div>
+            <h1>Login</h1>
+            <form onSubmit={(event) => {
+                event.preventDefault();
+                authService
+                    .login({
+                        email: values.email,
+                        password: values.senha,
+                    })
+                    .then(() => {
+                        router.push('/auth-page-ssr');
+                    })
+                    .catch((err: string) => {
+                        console.log(err);
+                        alert('Usuário ou a senha estão inválidos')
+                    })
+            }}>
+                <input
+                    placeholder="E-mail" name="email" type="email"
+                    value={values.email} onChange={handleChange}
+                />
+                <input
+                    placeholder="Senha" name="senha" type="password"
+                    value={values.senha} onChange={handleChange}
+                />
+                <pre>
+                    {JSON.stringify(values, null, 2)}
+                </pre>
+                <div>
+                    <button>
+                        Entrar
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
+}
