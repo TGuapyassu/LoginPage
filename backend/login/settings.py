@@ -16,7 +16,7 @@ load_dotenv()
 SECRET_KEY = os.getenv('SECRET_KEY_DJANGO')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,10 +80,11 @@ DATABASES = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),  # Expiração de 30 minutos
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),     # Expiração do refresh token em 2 dias
-    'ROTATE_REFRESH_TOKENS': True,                    # Rotacionar refresh tokens
-    'BLACKLIST_AFTER_ROTATION': True,                 # Blacklist após rotação
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=15),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=2),
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
 
 
